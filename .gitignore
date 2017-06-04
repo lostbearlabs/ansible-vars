@@ -1,0 +1,11 @@
+.idea
+
+# compiled files
+*.pyc
+*.pyo
+*.$py.class
+__pycache__
+
+
+
+
