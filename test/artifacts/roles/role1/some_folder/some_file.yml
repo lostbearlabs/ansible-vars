@@ -1,2 +1,4 @@
 ---
 - test: "{{ test_var_2 }}"
+  vars:
+     test_var_4: value4
