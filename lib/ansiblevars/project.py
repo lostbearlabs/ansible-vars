@@ -1,10 +1,5 @@
 # Represents a project, containing both playbooks and roles
 
-## TODO NEXT:  IMPLEMENT THIS!
-
-# Testing idea:  let's just have a test project as an artifact under the tests folder and
-# read its actual contents.  No point getting to unit-test-purist here.
-
 import os
 from os.path import basename
 

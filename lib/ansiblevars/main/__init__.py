@@ -7,18 +7,24 @@ from ansiblevars.project import Project
 def main():
     path = "/Users/eric/dev/ansible/ansible-hydra"
     project = Project(path)
-    for playbook in project.get_playbooks():
+    for playbook in sorted(project.get_playbooks(), key=lambda p: p.get_name()):
         report("Playbook", playbook.get_name(), playbook)
-    for role in project.get_roles():
+    for role in sorted(project.get_roles(), key=lambda r: r.get_role_name()):
         report("Role", role.get_role_name(), role)
 
 
 def report(tag, name, book):
     print("%s %s:" % (tag, name))
-    for dx in book.get_defaults():
-        print("   %s" % dx)
-    for rx in book.get_references():
-        print("   %s" % rx)
+    print("   defaults:")
+    defaults = book.get_defaults();
+    if defaults:
+        for key in sorted(defaults.keys()):
+            print("      %s ==> %s" % (key, defaults[key]))
+    references = book.get_references()
+    print("   references:")
+    if references:
+        for rx in sorted(references):
+            print("      %s" % rx)
 
 
 if __name__ == "__main__":

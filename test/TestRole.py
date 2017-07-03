@@ -44,6 +44,12 @@ class TestRole(unittest.TestCase):
         sut = Role("role1", path)
         self.assertTrue('test_var_2' in sut.get_references())
 
+    def test_getDefaults_defaultInRoleDefault_findsIt(self):
+        path = os.getcwd() + "/test/artifacts/roles/role1"
+        sut = Role("role1", path)
+        defs = sut.get_defaults()
+        self.assertTrue(defs.has_key('test_var_3'))
+        self.assertTrue(defs['test_var_3'] == 'value3')
 
 if __name__ == '__main__':
     unittest.main()
