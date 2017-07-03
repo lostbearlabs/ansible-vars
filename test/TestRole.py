@@ -51,5 +51,12 @@ class TestRole(unittest.TestCase):
         self.assertTrue(defs.has_key('test_var_3'))
         self.assertTrue(defs['test_var_3'] == 'value3')
 
+    def test_getDefaults_defaultInYamls_findsIt (self):
+        path = os.getcwd() + "/test/artifacts/roles/role1"
+        sut = Role("role1", path)
+        defs = sut.get_defaults()
+        self.assertTrue(defs.has_key('test_var_4'))
+        self.assertTrue(defs['test_var_4'] == 'value4')
+
 if __name__ == '__main__':
     unittest.main()

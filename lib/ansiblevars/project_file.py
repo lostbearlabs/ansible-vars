@@ -41,7 +41,7 @@ class ProjectFile(object):
             try:
                 yaml_obj = yaml.load(stream)
                 if is_role_defaults:
-                    self.read_role_defaults(yaml_obj)
+                    self.read_defaults(yaml_obj)
                 else:
                     self.read_yaml(yaml_obj)
             except yaml.YAMLError as exc:
@@ -49,8 +49,13 @@ class ProjectFile(object):
 
     def read_yaml(self, obj):
         if isinstance(obj, dict):
-            for val in obj.values():
-                self.read_yaml(val)
+            for key in obj.keys():
+                val = obj[key]
+                if key == 'vars':
+                    # print('FOUND VARS', val)
+                    self.read_defaults(val)
+                else:
+                    self.read_yaml(val)
         elif isinstance(obj, list):
             for val in obj:
                 self.read_yaml(val)
@@ -64,8 +69,8 @@ class ProjectFile(object):
                 #print('found', grp)
                 self.add_reference(grp)
 
-    def read_role_defaults(self, obj):
+    def read_defaults(self, obj):
         if isinstance(obj, dict):
             for key in obj.keys():
-                #print('found role default', key, obj[key])
+                # print('found default', key, obj[key])
                 self.add_default(key, obj[key])
