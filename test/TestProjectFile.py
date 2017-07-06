@@ -3,6 +3,7 @@ import unittest
 from ansiblevars.project_file import ProjectFile
 from tempfile import TemporaryFile, NamedTemporaryFile
 import os
+from ansiblevars.variable_default import VariableDefault
 
 class TestProjectFile(unittest.TestCase):
 
@@ -16,19 +17,18 @@ class TestProjectFile(unittest.TestCase):
     def test_getDefaults_hasOneDefault_returnsIt(self):
         sut = ProjectFile(None)
         sut.add_default('A', '1')
-        self.assertEqual({'A': '1'}, sut.get_defaults())
+        self.assertEqual(set([VariableDefault('A', '1', None)]), sut.get_defaults())
 
     def test_getReferences_hasTwoReferences_returnsThem(self):
         sut = ProjectFile(None)
         sut.add_reference('A')
         sut.add_reference('B')
-        self.assertEquals({'A', 'B'}, sut.get_references())
+        self.assertEquals({'A', 'B'}, set(map(lambda x: x.get_variable_name(), sut.get_references())))
 
     def test_getReferences_referenceInYaml_findsIt(self):
-        # TODO: not hardcode
         path = os.getcwd() + "/test/artifacts/playbook1.yml"
         sut = ProjectFile(path)
-        self.assertTrue( 'test_var_1' in sut.get_references() )
+        self.assertTrue('test_var_1' in map(lambda x: x.get_variable_name(), sut.get_references()))
 
 if __name__ == '__main__':
     unittest.main()

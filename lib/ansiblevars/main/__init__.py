@@ -18,12 +18,12 @@ def report(tag, name, book):
     print("   defaults:")
     defaults = book.get_defaults();
     if defaults:
-        for key in sorted(defaults.keys()):
-            print("      %s ==> %s" % (key, defaults[key]))
+        for dx in sorted(defaults, key=lambda p: p.get_variable_name()):
+            print("      %s" % dx)
     references = book.get_references()
     print("   references:")
     if references:
-        for rx in sorted(references):
+        for rx in sorted(references, key=lambda p: p.get_variable_name()):
             print("      %s" % rx)
 
 
