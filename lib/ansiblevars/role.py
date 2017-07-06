@@ -35,7 +35,7 @@ class Role(object):
         return refs
 
     def get_defaults(self):
-        defs = {}
+        defs = set()
         for f in self.files:
             defs.update(f.get_defaults())
         return defs

@@ -4,18 +4,19 @@
 import os
 import yaml
 import re
+from ansiblevars.variable_reference import VariableReference
+from ansiblevars.variable_default import VariableDefault
 
 
 class ProjectFile(object):
     def __init__(self, file):
-        self.defaults = {}
+        self.defaults = set()
         self.references = set()
         self.file = file
         if file is not None:
             file_name, file_extension = os.path.splitext(os.path.basename(file))
             self.name = file_name
             is_role_defaults = re.match('.*/roles/.*/defaults/main.yml$', file)
-            #print('parsing', file, is_role_defaults)
             self.parse_file(is_role_defaults)
 
     def get_file(self):
@@ -25,13 +26,13 @@ class ProjectFile(object):
         return self.name
 
     def add_default(self, name, value):
-        self.defaults[name] = value
+        self.defaults.add(VariableDefault(name, str(value), self.file))
 
     def get_defaults(self):
         return self.defaults
 
     def add_reference(self, name):
-        self.references.add(name)
+        self.references.add(VariableReference(name, self.file))
 
     def get_references(self):
         return set(self.references)
