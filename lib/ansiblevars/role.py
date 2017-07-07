@@ -5,22 +5,27 @@ import os
 
 
 class Role(object):
-    def __init__(self, role_name, path):
+    def __init__(self, role_name, path, config):
         self.role_name = role_name
         self.files = []
         self.path = path
         if path is not None:
-            self.read_children(path)
+            self.read_children(path, config)
 
-    def read_children(self, path):
+    def read_children(self, path, config):
         for f in os.listdir(path):
             file_name, file_extension = os.path.splitext(f)
             full_path = os.path.join(path, f)
             if os.path.isfile(full_path) and file_extension == ".yml":
-                child_file = ProjectFile(full_path)
+                child_file = ProjectFile(full_path, config)
                 self.add_file(child_file)
+                child_file.parse_from_yaml()
+            elif os.path.isfile(full_path) and file_extension == ".j2":
+                child_file = ProjectFile(full_path, config)
+                self.add_file(child_file)
+                child_file.parse_from_j2()
             elif os.path.isdir(full_path):
-                self.read_children(full_path)
+                self.read_children(full_path, config)
 
     def get_role_name(self):
         return self.role_name
