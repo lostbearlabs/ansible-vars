@@ -3,11 +3,29 @@ import errno
 
 from ansiblevars.project import Project
 from ansiblevars.report import Report
+from ansiblevars.config import Config
+from optparse import OptionParser
 
 
 def main():
-    path = "/Users/eric/dev/ansible/ansible-hydra"
-    project = Project(path)
+
+    usage = "usage: ansible-vars [args]"
+    parser = OptionParser()
+    parser.add_option("-d", "--directory", action="store", type="string", dest="dir",
+                      help="directory where ansible playbooks and roles are located")
+    parser.add_option("-v", "--verbose",
+                      action="store_true", dest="verbose", default=False,
+                      help="trace program execution")
+
+    (options, args) = parser.parse_args()
+
+    if options.dir is None:
+        parser.print_usage()
+        parser.print_usage()
+        exit(1)
+
+    config = Config(options.verbose)
+    project = Project(options.dir, config)
     report = Report(project)
     report.display()
 

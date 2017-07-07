@@ -6,7 +6,7 @@ class TestProject(unittest.TestCase):
 
     def setUp(self):
         path = os.getcwd() + "/test/artifacts"
-        self.sut = Project(path)
+        self.sut = Project(path, None)
 
     def test_getPlaybooks_includesPlaybook1(self):
         name = "playbook1"
