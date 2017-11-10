@@ -5,8 +5,8 @@ from tempfile import TemporaryFile, NamedTemporaryFile
 import os
 from ansiblevars.variable_default import VariableDefault
 
-class TestProjectFile(unittest.TestCase):
 
+class TestProjectFile(unittest.TestCase):
     def setUp(self):
         self.temp_file = NamedTemporaryFile()
 
@@ -30,6 +30,7 @@ class TestProjectFile(unittest.TestCase):
         sut = ProjectFile(path, None)
         sut.parse_from_yaml()
         self.assertTrue('test_var_1' in map(lambda x: x.get_variable_name(), sut.get_references()))
+
 
 if __name__ == '__main__':
     unittest.main()

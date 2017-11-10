@@ -44,7 +44,7 @@ class TestRole(unittest.TestCase):
         r3 = VariableDefault('A', '3', None)
         r4 = VariableDefault('C', '4', None)
 
-        self.assertEquals(set([r1,r2,r3,r4]), sut.get_defaults())
+        self.assertEquals(set([r1, r2, r3, r4]), sut.get_defaults())
 
     def test_getReferences_referenceInYaml_findsIt(self):
         path = os.getcwd() + "/test/artifacts/roles/role1"
@@ -54,16 +54,17 @@ class TestRole(unittest.TestCase):
     def test_getDefaults_defaultInRoleDefault_findsIt(self):
         path = os.getcwd() + "/test/artifacts/roles/role1"
         sut = Role("role1", path, None)
-        defs = filter(lambda x: x.get_variable_name()=='test_var_3', sut.get_defaults())
+        defs = filter(lambda x: x.get_variable_name() == 'test_var_3', sut.get_defaults())
         self.assertTrue(len(defs) == 1)
         self.assertTrue(defs[0].get_default_value() == 'value3')
 
-    def test_getDefaults_defaultInYamls_findsIt (self):
+    def test_getDefaults_defaultInYamls_findsIt(self):
         path = os.getcwd() + "/test/artifacts/roles/role1"
         sut = Role("role1", path, None)
-        defs = filter(lambda x: x.get_variable_name()=='test_var_4', sut.get_defaults())
+        defs = filter(lambda x: x.get_variable_name() == 'test_var_4', sut.get_defaults())
         self.assertTrue(len(defs) == 1)
         self.assertTrue(defs[0].get_default_value() == 'value4')
+
 
 if __name__ == '__main__':
     unittest.main()

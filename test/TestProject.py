@@ -2,8 +2,8 @@ import unittest
 import os
 from ansiblevars.project import Project
 
-class TestProject(unittest.TestCase):
 
+class TestProject(unittest.TestCase):
     def setUp(self):
         path = os.getcwd() + "/test/artifacts"
         self.sut = Project(path, None)
