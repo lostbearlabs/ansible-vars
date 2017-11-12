@@ -10,7 +10,7 @@ It reports:
 * variables with the same name but different defaults
 * default values specified for the same variable name in multiple places
 
-ansible-vars is inspired by and borrows code from [ansible-lint][https://github.com/willthames/ansible-lint]
+ansible-vars is inspired by [ansible-lint][https://github.com/willthames/ansible-lint]
 
 
 ## Setup
@@ -50,6 +50,8 @@ $> dev/ansible/ansible-vars/lib/ansiblevars/main/__init__.py -d  ../my-ansible-p
 
 ```
 $> tox test
+# -- OR --
+$> python setup.py test
 ```
 
 ### Running Tests in PyCharm

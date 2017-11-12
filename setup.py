@@ -19,7 +19,7 @@ setup(
     package_dir={'': 'lib'},
     packages=find_packages('lib'),
     zip_safe=False,
-    install_requires=['ansible', 'pyyaml', 'six'],
+    install_requires=['pyyaml'],
     entry_points={
         'console_scripts': [
              'ansible-vars= ansiblevars.main:main'
