@@ -9,10 +9,19 @@ class Role(object):
         self.role_name = role_name
         self.files = []
         self.path = path
+        self.config = config
         if path is not None:
             self.read_children(path, config)
 
+    def verbose(self):
+        return self.config is not None and self.config.is_verbose()
+
+    def trace(self, msg):
+        if self.verbose():
+            print(msg)
+
     def read_children(self, path, config):
+        self.trace("read_children %s" % path)
         for f in os.listdir(path):
             file_name, file_extension = os.path.splitext(f)
             full_path = os.path.join(path, f)
@@ -20,12 +29,15 @@ class Role(object):
                 child_file = ProjectFile(full_path, config)
                 self.add_file(child_file)
                 child_file.parse_from_yaml()
-            elif os.path.isfile(full_path) and file_extension == ".j2":
+            elif os.path.isfile(full_path) and (file_extension == ".j2" or "templates" in path):
                 child_file = ProjectFile(full_path, config)
                 self.add_file(child_file)
-                child_file.parse_from_j2()
+                child_file.parse_from_text()
             elif os.path.isdir(full_path):
                 self.read_children(full_path, config)
+            else:
+                self.trace("IGNORING: %s" % path)
+
 
     def get_role_name(self):
         return self.role_name

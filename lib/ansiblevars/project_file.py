@@ -23,8 +23,9 @@ class ProjectFile(object):
             is_role_defaults = re.match('.*/roles/.*/defaults/main.yml$', self.file)
             self.parse_file(is_role_defaults)
 
-    def parse_from_j2(self):
+    def parse_from_text(self):
         if self.file is not None:
+            self.trace("parse_from_j2 file=%s" % self.file)
             with open(self.file, 'r') as stream:
                 text = stream.read()
                 self.read_reference(text, "  ")
@@ -66,6 +67,10 @@ class ProjectFile(object):
             except yaml.YAMLError as exc:
                 print(exc)
 
+    # TODO: for yml files, need to detect reference to yyy in:
+    #    when: yyy
+    #    when: not yyy
+    #    etc
     def read_yaml(self, obj, indent):
         self.trace("%stype=%s" % (indent, type(obj)))
         if isinstance(obj, dict):
@@ -86,8 +91,11 @@ class ProjectFile(object):
             self.trace("%sfound scalar: %s" % (indent, str(obj)))
             self.read_reference(str(obj), indent)
 
+
+    # TODO: for template files, need to detect reference to yyy in:
+    #    {% for x in yyy %}
     def read_reference(self, txt, indent):
-        refs = re.findall('{{\s+([^\s]+)\s+}}', txt)
+        refs = re.findall('{{\s+([^\s]+)\s+[^}]*}}', txt)
         for ref in refs:
             self.trace("%s   found reference: %s" % (indent, ref))
             self.add_reference(ref)

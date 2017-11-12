@@ -1,2 +1,4 @@
 ---
-- test: "{{ test_var_1 }}"
+- test1: "{{ test_var_1 }}"
+- test2: "{{ test_var_2 | lower }}"
+- test3: aaa="{{ test_var_3 }}"  bbb="{{ test_var_4 }}"

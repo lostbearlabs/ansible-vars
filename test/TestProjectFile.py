@@ -31,6 +31,30 @@ class TestProjectFile(unittest.TestCase):
         sut.parse_from_yaml()
         self.assertTrue('test_var_1' in map(lambda x: x.get_variable_name(), sut.get_references()))
 
+    def test_getReferences_referenceInYamlWithPipe_findsIt(self):
+        path = os.getcwd() + "/test/artifacts/playbook1.yml"
+        sut = ProjectFile(path, None)
+        sut.parse_from_yaml()
+        self.assertTrue('test_var_2' in map(lambda x: x.get_variable_name(), sut.get_references()))
+
+    def test_getReferences_referenceInJ2_findsIt(self):
+        path = os.getcwd() + "/test/artifacts/template2.xml.j2"
+        sut = ProjectFile(path, None)
+        sut.parse_from_yaml()
+        self.assertTrue('tree1' in map(lambda x: x.get_variable_name(), sut.get_references()))
+
+    def test_getReferences_twoReferencesInLineInJ2_findsThem(self):
+        path = os.getcwd() + "/test/artifacts/template2.xml.j2"
+        sut = ProjectFile(path, None)
+        sut.parse_from_yaml()
+        self.assertTrue('tree2' in map(lambda x: x.get_variable_name(), sut.get_references()))
+        self.assertTrue('frog2' in map(lambda x: x.get_variable_name(), sut.get_references()))
+
+    def test_getReferences_referenceInJ2WithPipe_findsIt(self):
+        path = os.getcwd() + "/test/artifacts/template2.xml.j2"
+        sut = ProjectFile(path, None)
+        sut.parse_from_yaml()
+        self.assertTrue('tree3' in map(lambda x: x.get_variable_name(), sut.get_references()))
 
 if __name__ == '__main__':
     unittest.main()
