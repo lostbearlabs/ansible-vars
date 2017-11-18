@@ -6,6 +6,7 @@ import yaml
 import re
 from ansiblevars.variable_reference import VariableReference
 from ansiblevars.variable_default import VariableDefault
+from ansiblevars.text_analyzer import TextAnalyzer
 
 
 class ProjectFile(object):
@@ -28,7 +29,10 @@ class ProjectFile(object):
             self.trace("parse_from_j2 file=%s" % self.file)
             with open(self.file, 'r') as stream:
                 text = stream.read()
-                self.read_reference(text, "  ")
+                analyzer = TextAnalyzer()
+                analyzer.add_text(text)
+                for ref in analyzer.get_references():
+                    self.add_reference(ref)
 
     def verbose(self):
         return self.config is not None and self.config.is_verbose()
@@ -92,8 +96,6 @@ class ProjectFile(object):
             self.read_reference(str(obj), indent)
 
 
-    # TODO: for template files, need to detect reference to yyy in:
-    #    {% for x in yyy %}
     def read_reference(self, txt, indent):
         refs = re.findall('{{\s+([^\s]+)\s+[^}]*}}', txt)
         for ref in refs:
