@@ -12,6 +12,22 @@ It reports:
 
 ansible-vars is inspired by [ansible-lint][https://github.com/willthames/ansible-lint]
 
+## Limitations
+
+ansible-vars currently operates using simple regular expressions.  It does not attempt to
+create a full semantic tree of your playbook.  This means that it will incorrectly
+detect and report certain cases, for example:
+
+* in a template loop, the loop variable will be reported as an unset variable
+* in a default that references another variable, the reference will be treated as a default string
+* structured data is not understood, and values like "server.ip" will be misinterpreted as independent unset variables
+
+These cases are all fairly easy to "eyeball" in the output and may be handled better in a
+future version.
+
+There are a few other known limitations:
+
+* `register` is not handled.  Any variable that is not given a default value will be reported as unset
 
 ## Setup
 

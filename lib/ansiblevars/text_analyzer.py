@@ -1,5 +1,8 @@
 import re
 
+
+# Examines non-YAML text (probably from a J2 template file?) for
+# variable references.
 class TextAnalyzer(object):
 
     def __init__(self):
@@ -7,9 +10,6 @@ class TextAnalyzer(object):
 
     def get_references(self):
         return self.references
-
-    # TODO: for template files, need to detect reference to yyy in:
-    #    {% for x in yyy %}
 
     def add_text(self, text):
         refs = re.findall('{{\s+([^\s]+)\s+[^}]*}}', text)
